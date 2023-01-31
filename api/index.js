@@ -9,9 +9,10 @@ var fruit_prices = [
     {name: "apple", id: 3, price: 200},
 ];
 
-app.listen(port, () => {
-    console.log("express: port 3001 opened");
+var listener = app.listen(port, () => {
+    console.log('express: port %d opened', listener.address().port);
 });
+
 app.get("/fruit/prices", (req, res) => {
     console.log("GET: access to /fruit/prices");
     res.send(fruit_prices);

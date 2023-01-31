@@ -5,7 +5,7 @@ var app = express();
 var PORT = 3000;
 
 var listener = app.listen(PORT, () => {
-    console.log("${listener.address().port}");
+    console.log('express: port %d opened', listener.address().port);
 });
 
 app.use(express.static('public'));

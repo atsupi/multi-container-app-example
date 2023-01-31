@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  api:
+    build: ./api
+    image: web-api
+    container_name: node-web-api
+    ports:
+      - "3001:3001"
+  web:
+    build: ./web
+    image: web-app
+    container_name: node-web-app
+    ports:
+      - "3000:3000"
