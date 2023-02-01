@@ -15,10 +15,12 @@ var listener = app.listen(port, () => {
 
 app.get("/fruit/prices", (req, res) => {
     console.log("GET: access to /fruit/prices");
+    res.set({'Access-Control-Allow-Origin': '*'});
     res.send(fruit_prices);
 });
 app.get("/fruit/prices/:id", (req, res) => {
     console.log("GET: access to /fruit/prices/:id");
+    res.set({'Access-Control-Allow-Origin': '*'});
     var item = fruit_prices.find(price => {
         return price.id === parseInt(req.params.id);
     });
@@ -27,6 +29,8 @@ app.get("/fruit/prices/:id", (req, res) => {
 });
 app.post("/fruit/prices", (req, res) => {
     console.log("POST: access to /fruit/prices");
+    res.set({'Access-Control-Allow-Origin': '*'});
+    console.log(req.body);
     const item = {
         name: req.body.name,
         id: fruit_prices.length + 1,
