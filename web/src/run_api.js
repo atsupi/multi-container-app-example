@@ -1,4 +1,7 @@
-var prices = [{"name": "", "id": 1, "price": 0}] // dummy
+var api_origin = "http://localhost:3001";
+
+var prices = [{"name": "", "id": 1, "price": 0}]; // dummy
+
 const table_header = [
     "Id",
     "Name",
@@ -41,7 +44,7 @@ function createPriceTable() {
 }
 
 async function callApi() {
-    const res = await fetch("http://localhost:3001/fruit/prices");
+    const res = await fetch(api_origin + "/fruit/prices");
     return await res.json();
 }
 
@@ -50,19 +53,13 @@ async function callPostApi() {
         "name": "melon",
         "price": 500,
     };
-    const res = await fetch("http://localhost:3001/fruit/prices", 
+    const res = await fetch(api_origin + "/fruit/prices", 
         {
             method: "POST",
-            mode: "no-cors",
-            headers: { 
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' },
         });
-//    const value = await res.json();
-//    return value;
-        return res;
+    return await res.json();
 }
 
 function buttonClick() {
@@ -76,6 +73,7 @@ function buttonClick() {
 
 document.getElementById("addone").addEventListener('click', buttonClick);
 
+console.log("calling api...");
 callApi().then(result => {
     prices = result;
     createPriceTable();
