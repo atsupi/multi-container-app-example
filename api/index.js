@@ -2,8 +2,7 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-if (process.env.NODE_ENV !== 'prod')
-{
+if (process.env.NODE_ENV !== 'prod') {
     require('dotenv').config();
 }
 const web_origin = process.env.WEBORIGIN || "http://localhost:3000";
@@ -16,11 +15,14 @@ app.use(cors({
 }));
 const port = process.env.PORT || 3001;
 
-var fruit_prices = [
-    {name: "banana", id: 1, price: 100},
-    {name: "strawberry", id: 2, price: 300},
-    {name: "apple", id: 3, price: 200},
-];
+var fruit_prices = [];
+if (process.env.NODE_ENV !== 'prod') {
+    fruit_prices = [
+        {name: "banana", id: 1, price: 100},
+        {name: "strawberry", id: 2, price: 300},
+        {name: "apple", id: 3, price: 200},
+    ];    
+}
 
 var listener = app.listen(port, () => {
     console.log('express: port %d opened', listener.address().port);
@@ -39,8 +41,7 @@ app.get("/fruit/prices/:id", (req, res) => {
 
 app.post("/fruit/prices", (req, res) => {
     console.log("POST: access to /fruit/prices");
-    if (req.body)
-    {
+    if (req.body) {
         const item = {
             name: req.body.name,
             id: fruit_prices.length + 1,
