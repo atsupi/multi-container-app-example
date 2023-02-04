@@ -1,10 +1,20 @@
 console.log("node.js started");
 
-var express = require('express');
-var app = express();
-var PORT = 3000;
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-var listener = app.listen(PORT, () => {
+if (process.env.NODE_ENV !== 'prod') {
+    require('dotenv').config();
+}
+
+if (process.env.APIORIGIN) {
+    console.log("APIORIGIN environment variable detected.");
+}
+const APIORIGIN = process.env.APIORIGIN || "http://localhost:3001";
+console.log("API end point is %s", APIORIGIN + "/fruit/prices");
+
+const listener = app.listen(PORT, () => {
     console.log('express: port %d opened', listener.address().port);
 });
 

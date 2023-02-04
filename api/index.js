@@ -1,7 +1,20 @@
-var express = require('express');
-var app = express();
-var port = 3001;
+const express = require('express');
+const app = express();
 app.use(express.json());
+
+if (process.env.NODE_ENV !== 'prod')
+{
+    require('dotenv').config();
+}
+const web_origin = process.env.WEBORIGIN || "http://localhost:3000";
+
+const cors = require('cors');
+app.use(cors({
+    origin: web_origin,
+    methods: "GET, POST",
+
+}));
+const port = process.env.PORT || 3001;
 
 var fruit_prices = [
     {name: "banana", id: 1, price: 100},
@@ -15,27 +28,25 @@ var listener = app.listen(port, () => {
 
 app.get("/fruit/prices", (req, res) => {
     console.log("GET: access to /fruit/prices");
-    res.set({'Access-Control-Allow-Origin': '*'});
-    res.send(fruit_prices);
+    res.json(fruit_prices);
 });
+
 app.get("/fruit/prices/:id", (req, res) => {
     console.log("GET: access to /fruit/prices/:id");
-    res.set({'Access-Control-Allow-Origin': '*'});
-    var item = fruit_prices.find(price => {
-        return price.id === parseInt(req.params.id);
-    });
-    console.log(item);
-    res.send(item);
+    var item = fruit_prices.find(price => (price.id === parseInt(req.params.id)));
+    res.json(item);
 });
+
 app.post("/fruit/prices", (req, res) => {
     console.log("POST: access to /fruit/prices");
-    res.set({'Access-Control-Allow-Origin': '*'});
-    console.log(req.body);
-    const item = {
-        name: req.body.name,
-        id: fruit_prices.length + 1,
-        price: req.body.price
+    if (req.body)
+    {
+        const item = {
+            name: req.body.name,
+            id: fruit_prices.length + 1,
+            price: req.body.price
+        }
+        fruit_prices = [...fruit_prices, item];
+        res.json(fruit_prices);
     }
-    fruit_prices = [...fruit_prices, item];
-    res.send(fruit_prices);
 });
