@@ -48,10 +48,10 @@ async function callApi() {
     return await res.json();
 }
 
-async function callPostApi() {
+async function callPostApi(name, price) {
     const data = {
-        "name": "melon",
-        "price": 500,
+        "name": name,
+        "price": price,
     };
     const res = await fetch(api_origin + "/fruit/prices", 
         {
@@ -63,11 +63,28 @@ async function callPostApi() {
 }
 
 function buttonClick() {
+    //check input form
+    const name = priceform.fruit_name.value;
+    const price = priceform.fruit_price.value;
+    if (name === "" || price === "") return;
     //call POST API
-    callPostApi().then (result => {
-        console.log(result);
+    callPostApi(name, price).then (result => {
         prices = result;
-        document.location.reload();
+        // append price data to the last
+        const table_div = document.getElementById('pricetable');
+        const table = table_div.childNodes[1]; // <table />
+        const tr = document.createElement('tr');
+        for (var i = 0; i < table_header.length; i++) {
+            const td = document.createElement('td');
+            switch (i) {
+            case 0: td.textContent = prices.length; break;
+            case 1: td.textContent = name; break;
+            case 2: td.textContent = price; break;
+            default:
+            }
+            tr.appendChild(td);    
+        }
+        table.appendChild(tr);
     });
 }
 
