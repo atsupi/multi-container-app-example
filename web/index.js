@@ -29,8 +29,9 @@ app.get("/run_api.js", (req, res) => {
     res.contentType('javascript');
     if (process.env.NODE_ENV === 'prod') {
         res.status(200).sendFile(__dirname + '/src/run_api.prod.js');
+        console.log("GET: src/run_api.prod.js is released");
     } else {
         res.status(200).sendFile(__dirname + '/src/run_api.js');
+        console.log("GET: src/run_api.js is released");
     }
-    console.log("GET: src/run_api.js is released");
 });
