@@ -15,11 +15,6 @@ const listener = app.listen(PORT, () => {
 });
 
 app.use(express.static('public'));
-app.get("/", (req, res) => {
-    res.contentType('html');
-    res.status(200).sendFile(__dirname + '/src/index.html');
-    console.log("GET: src/index.html is released");
-});
 
 app.get("/run_api.js", (req, res) => {
     res.contentType('javascript');
